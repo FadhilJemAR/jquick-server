@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 import dbConnect from "./lib/dbConnect.js";
 import productRouter from './routes/productRoutes.js';
+import userRouter from './routes/userRoutes.js';
 dotenv.config();
 dbConnect();
 const app = express();
@@ -15,6 +16,7 @@ app.use(cors({ origin: process.env.ALLOWED_ORIGIN }));
 
 
 app.use('/api/products',productRouter);
+app.use('/api/auth',userRouter);
 app.listen(PORT,(err)=>{
     if(err)console.error(err);
     console.log(` server berjalan di ${process.env.BASE_URL}`)
