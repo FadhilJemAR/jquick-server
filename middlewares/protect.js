@@ -2,6 +2,7 @@ import { verifyToken } from "../helpers/verifyToken.js";
 
 export const protect = async(req,res,next)=>{
     try {  
+        const accessToken = req.cookies.accessToken;
         if(!accessToken){
             res.status(404).json({message:'Tidak ada token, dilarang masuk'})
         }else{
@@ -16,6 +17,5 @@ export const protect = async(req,res,next)=>{
     } catch (error) {
         res.status(500).json({message:'Kesalahan middleware otorisasi' ,error:error.message})
     }
-    const accessToken = req.cookies.accessToken;
      
 }
