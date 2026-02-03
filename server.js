@@ -3,13 +3,19 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import dbConnect from "./lib/dbConnect";
-import productRouter from './routes/productRoutes'
+import dbConnect from "./lib/dbConnect.js";
+import productRouter from './routes/productRoutes.js';
 dotenv.config();
 dbConnect();
 const app = express();
 const PORT = process.env.SERVER_PORT;
 
-app.use(productRouter)
-
+app.use(express.json())
 app.use(cors({ origin: process.env.ALLOWED_ORIGIN }));
+
+
+app.use('/api/products',productRouter);
+app.listen(PORT,(err)=>{
+    if(err)console.error(err);
+    console.log(` server berjalan di ${process.env.BASE_URL}`)
+})
