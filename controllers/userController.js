@@ -37,10 +37,12 @@ export const loginUser = async(req,res)=>{
     try {
         const {email,password} = req.body;
         const user = await User.findOne({email}).lean();
-
+        if(!user){
+            res.status(400).json({message:'Pengguna tidak ditemukan',emailValid:false,passwordValid:null})
+        }
         const passwordCorrect = comparePassword(password,user.password);
         if(!passwordCorrect){
-        res.status(400).json({message:'Kata sandi salah'});
+        res.status(400).json({message:'Kata sandi salah',emailValid:true,passwordValid:false});
         }else{
              const payload = {
                 _id:user._id,
@@ -48,7 +50,7 @@ export const loginUser = async(req,res)=>{
                 email:user.email
              }
             const accessToken = generateToken(payload)
-            res.status(201).cookie('accessToken',accessToken,cookieOptions).json({message:"Berhasil masuk"})
+            res.status(201).cookie('accessToken',accessToken,cookieOptions).json({message:"Berhasil masuk",emailValid:true,password:true});
         }
     } catch (error) {
         res.status(500).json({message:'Gagal masuk ', error:error.message});
