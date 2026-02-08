@@ -8,11 +8,15 @@ export const registerUser = async(req,res)=>{
     try {
         const {name,email,password} = req.body;
         
-        const userExists = await User.findOne({email}).lean();
-        if(userExists){
-            return res.status(400).json({message:'Pengguna sudah ada atau Email sudah digunakan'});
+        const userExistsInName = await User.findOne({name}).lean();
+        if(userExistsInName){
+            return res.status(400).json({message:'Nama telah digunakan',nameValid:false,emailValid:null,passwordValid:null});
         }
 
+        const userExistsInEmail = await User.findOne({email}).lean();
+         if(userExistsInEmail){
+            return res.status(400).json({message:'Email telah digunakan',nameValid:true,emailValid:false,passwordValid:null});
+        }
         const hashedPassword = hashPassword(password);
         const user = await  User.create({name,email,password:hashedPassword});
 
@@ -23,9 +27,7 @@ export const registerUser = async(req,res)=>{
             email:user.email
           }
           const accessToken = generateToken(payload);
-          res.status(201).cookie('accessToken',accessToken,cookieOptions).json({message:'Berhasil mendaftar'})
-        }else{
-            res.status(400).json({message:'Data tidak valid'});
+          res.status(201).cookie('accessToken',accessToken,cookieOptions).json({message:'Berhasil mendaftar',nameValid:true,emailValid:true,passwordValid:true})
         }
     } catch (error) {
         res.status(500).json({message:"Gagal mendaftar ",error:error.message});
