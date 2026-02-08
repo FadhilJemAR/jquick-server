@@ -38,7 +38,7 @@ export const loginUser = async(req,res)=>{
         const {email,password} = req.body;
         const user = await User.findOne({email}).lean();
         if(!user){
-            res.status(400).json({message:'Pengguna tidak ditemukan',emailValid:false,passwordValid:null})
+            res.status(400).json({message:'Email tidak ditemukan',emailValid:false,passwordValid:null})
         }
         const passwordCorrect = comparePassword(password,user.password);
         if(!passwordCorrect){
