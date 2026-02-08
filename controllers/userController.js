@@ -3,6 +3,7 @@ import User from '../models/User.js';
 import {hashPassword} from '../helpers/hashPassword.js';
 import {comparePassword} from '../helpers/comparePassword.js';
 import { cookieOptions } from '../options/cookieOptions.js';
+import { verifyToken } from '../helpers/verifyToken.js';
 export const registerUser = async(req,res)=>{
     try {
         const {name,email,password} = req.body;
@@ -54,4 +55,25 @@ export const loginUser = async(req,res)=>{
     }
   
 
+}
+
+export const validateTokenUser = async(req,res)=>{
+    try {
+        const accessToken = req.cookies.accessToken;
+        
+        if(accessToken){
+            //jika token akses ada maka check kevalidan nnya
+            const tokenValid = verifyToken(accessToken);
+            if(tokenValid){
+                res.json({message:"Akses diterima, anda boleh mengakses sumber daya"})
+            }else{
+                res.status(401).json({message:'Token tidak valid, dilarang mengaksessumber daya, silahkan masuk kembali'})
+            }
+        }else{
+               res.status(401).json({message:'Token tidak ditemukan, dilarang mengakses sumber daya, silahkan masuk kembali'})
+        }
+
+    } catch (error) {
+        res.status(500).json({message:'Gagal mengecek token',error:error.message})
+    }
 }
