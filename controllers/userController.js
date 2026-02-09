@@ -28,10 +28,10 @@ export const registerUser = async(req,res)=>{
             email:user.email
           }
           const accessToken = generateToken(payload);
-          res.status(201).cookie('accessToken',accessToken,cookieOptions).json({message:'Berhasil mendaftar',nameValid:true,emailValid:true,passwordValid:true})
+         return res.status(201).cookie('accessToken',accessToken,cookieOptions).json({message:'Berhasil mendaftar',nameValid:true,emailValid:true,passwordValid:true})
         }
     } catch (error) {
-        res.status(500).json({message:"Gagal mendaftar ",error:error.message});
+       return res.status(500).json({message:"Gagal mendaftar ",error:error.message});
     }
     
 }
@@ -41,11 +41,11 @@ export const loginUser = async(req,res)=>{
         const {email,password} = req.body;
         const user = await User.findOne({email}).lean();
         if(!user){
-            res.status(400).json({message:'Email tidak ditemukan',emailValid:false,passwordValid:null})
+          return  res.status(400).json({message:'Email tidak ditemukan',emailValid:false,passwordValid:null})
         }
         const passwordCorrect = comparePassword(password,user.password);
         if(!passwordCorrect){
-        res.status(400).json({message:'Kata sandi salah',emailValid:true,passwordValid:false});
+        return res.status(400).json({message:'Kata sandi salah',emailValid:true,passwordValid:false});
         }else{
              const payload = {
                 _id:user._id,
@@ -53,10 +53,10 @@ export const loginUser = async(req,res)=>{
                 email:user.email
              }
             const accessToken = generateToken(payload)
-            res.status(201).cookie('accessToken',accessToken,cookieOptions).json({message:"Berhasil masuk",emailValid:true,password:true});
+           return res.status(201).cookie('accessToken',accessToken,cookieOptions).json({message:"Berhasil masuk",emailValid:true,password:true});
         }
     } catch (error) {
-        res.status(500).json({message:'Gagal masuk ', error:error.message});
+       return res.status(500).json({message:'Gagal masuk ', error:error.message});
     }
   
 

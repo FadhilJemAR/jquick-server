@@ -14,9 +14,9 @@ export const createProduct = async (req, res) => {
     });
 
     const createdProduct = await product.save();
-    res.status(201).json({message:'Berhasil menambahkan produk',createdProduct});
+   return res.status(201).json({message:'Berhasil menambahkan produk',createdProduct});
   } catch (error) {
-    res
+   return res
       .status(500)
       .json({ message: "Gagal menambahkan produk", error: error.message });
   }
@@ -25,10 +25,36 @@ export const createProduct = async (req, res) => {
 export const getProducts = async (req, res) => {
   try {
     const products = await Product.find().lean();
-    res.json({message:'Berhasil mengambil produk',products});
+   return res.json({message:'Berhasil mengambil produk',products});
   } catch (error) {
     res
       .status(500)
       .json({ message: "Gagal mengambil produk", error: error.message });
   }
 };
+
+export const searchProducts = async (req,res)=>{
+  try {
+    const keyword = req.query.keyword;
+    if(keyword){
+      const products = await Product.find({name:{$regex:keyword,$options:'i'}});
+      if(products.length == 0){
+       return  res
+        .status(400)
+        .json({message:'Produk tidak ditemukan',products});
+      }else{
+       return res
+          .status(200)
+          .json({message:'Berhasil mencari produk',products});
+      }
+    }else{
+     return res
+        .status(400)
+        .json({message:'Kesalahan dalam endpoint pencarian'})
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({message:"Gagal mencari produk",error:error.message})
+  }
+}
