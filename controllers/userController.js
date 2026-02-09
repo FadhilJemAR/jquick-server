@@ -8,12 +8,13 @@ export const registerUser = async(req,res)=>{
     try {
         const {name,email,password} = req.body;
         
-        const userExistsInName = await User.findOne({name}).lean();
+        const userExistsInName = await User.findOne({name},).lean();
         if(userExistsInName){
             return res.status(400).json({message:'Nama telah digunakan',nameValid:false,emailValid:null,passwordValid:null});
         }
+        //cari tanpa memerhatikan huruf besar atau kecil
+        const userExistsInEmail = await  User.findOne({ email: { $regex: new RegExp(`^${req.body.email}$`, 'i')}});
 
-        const userExistsInEmail = await User.findOne({email}).lean();
          if(userExistsInEmail){
             return res.status(400).json({message:'Email telah digunakan',nameValid:true,emailValid:false,passwordValid:null});
         }
