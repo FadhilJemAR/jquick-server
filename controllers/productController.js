@@ -41,7 +41,7 @@ export const searchProducts = async (req,res)=>{
       if(products.length == 0){
        return  res
         .status(400)
-        .json({message:'Produk tidak ditemukan',products});
+        .json({message:'Produk tidak ditemukan'});
       }else{
        return res
           .status(200)
