@@ -25,7 +25,7 @@ app.use(express.json());
 app.use(cors({origin:process.env.ALLOWED_ORIGIN,credentials:true}));
 app.use(cookieParser());
 
-app.use('/api/products',productRouter);
+app.use('/api/products',protect,productRouter);
 app.use('/api/auth',userRouter);
 
 
