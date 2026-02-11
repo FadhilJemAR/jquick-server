@@ -33,6 +33,19 @@ export const getProducts = async (req, res) => {
   }
 };
 
+
+export const getProductById = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const product = await Product.findOne({_id:productId}).lean();
+    return res.json({message:'Berhasil mengambil produk',product});
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Gagal mengambil produk", error: error.message });
+  }
+};
+
 export const searchProducts = async (req,res)=>{
   try {
     const keyword = req.query.keyword;
