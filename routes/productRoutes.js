@@ -5,6 +5,6 @@ const router = express.Router({mergeParams:true});
 
 router.get('/',getProducts);
 router.post('/',createProduct);
-router.get('/:productId',getProductById);
 router.get('/search',searchProducts);
+router.get('/detail/:productId',getProductById);
 export default router
