@@ -24,7 +24,8 @@ export const createProduct = async (req, res) => {
 
 export const getProducts = async (req, res) => {
   try {
-    const products = await Product.find().lean();
+    const products = await Product.find().populate('seller','-password').lean();
+    console.log(products)
    return res.json({message:'Berhasil mengambil produk',products});
   } catch (error) {
     res
