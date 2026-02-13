@@ -11,6 +11,8 @@ export const protect = async(req,res,next)=>{
             if(!tokenValid){
                 res.status(400).json({message:'Token tidak valid atau kedaluwarsa'});
             }else{
+                //teruskan data userId yang diambil dari payload hasil decode token JWT
+                req.userId = tokenValid._id
                 next();
             }
         }

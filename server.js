@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import dbConnect from "./lib/dbConnect.js";
 import productRouter from './routes/productRoutes.js';
 import userRouter from './routes/userRoutes.js';
-
+import cartRouter from './routes/cartRoutes.js';
 //middlewares
 
 import { protect } from "./middlewares/protect.js";
@@ -27,7 +27,7 @@ app.use(cookieParser());
 
 app.use('/api/products',protect,productRouter);
 app.use('/api/auth',userRouter);
-
+app.use('/api/cart',protect,cartRouter)
 
 app.listen(PORT,(err)=>{
     if(err)console.error(err);

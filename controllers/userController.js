@@ -70,15 +70,16 @@ export const validateTokenUser = async(req,res)=>{
             //jika token akses ada maka check kevalidan nnya
             const tokenValid = verifyToken(accessToken);
             if(tokenValid){
-                res.json({message:"Akses diterima, anda boleh mengakses sumber daya"})
+               return  res.json({message:"Akses diterima, anda boleh mengakses sumber daya"})
             }else{
-                res.status(401).json({message:'Token tidak valid, dilarang mengaksessumber daya, silahkan masuk kembali'})
+               return res.status(401).json({message:'Token tidak valid, dilarang mengaksessumber daya, silahkan masuk kembali'})
             }
         }else{
-               res.status(401).json({message:'Token tidak ditemukan, dilarang mengakses sumber daya, silahkan masuk kembali'})
+             return  res.status(401).json({message:'Token tidak ditemukan, dilarang mengakses sumber daya, silahkan masuk kembali'})
         }
 
     } catch (error) {
-        res.status(500).json({message:'Gagal mengecek token',error:error.message})
+       return res.status(500).json({message:'Gagal mengecek token',error:error.message})
     }
 }
+
