@@ -4,7 +4,7 @@ export const protect = async(req,res,next)=>{
     try {  
         const accessToken = req.cookies.accessToken;
         if(!accessToken){
-            res.status(404).json({message:'Tidak ada token, dilarang masuk'})
+            res.status(404).json({message:'Tidak ada token, request atau permintaan ditolak'})
         }else{
             const tokenValid = verifyToken(accessToken);
             

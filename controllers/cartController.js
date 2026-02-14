@@ -11,6 +11,21 @@ export const addProductUserCart = async(req,res)=>{
                     .json({message:'Berhasil menambahkan ke keranjang'});
         }
     } catch (error) {
-        return res.status(500).json({message:'Gagal menambahkan ke keranjang', error:error.message})
+        return res
+                .status(500)
+                .json({message:'Gagal menambahkan ke keranjang', error:error.message})
+    }
+}
+
+export const getProductsInCart  = async(req,res)=>{
+    try {
+        const userId = req.userId;
+        const cart = await Cart.find({userId}).populate('productId').lean();
+        return res
+                .json({message:'Berhasil mengambil produk yang ada di keranjang',cart});
+    } catch (error) {
+        return res
+                .status(500)
+                .json({message:'Gagal mengambil produk yang ada di keranjang', error:error.message})
     }
 }
