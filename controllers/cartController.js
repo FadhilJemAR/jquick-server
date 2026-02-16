@@ -29,3 +29,17 @@ export const getProductsInCart  = async(req,res)=>{
                 .json({message:'Gagal mengambil produk yang ada di keranjang', error:error.message})
     }
 }
+
+export const deleteProductFromCart = async(req,res)=>{
+    try {
+        const userId = req.userId;
+        const {productId} = req.body;
+        await Cart.deleteOne({userId,productId});
+        return res
+                .json({message:'Berhasil menghapus dari keranjang'})
+    } catch (error) {
+        return res
+                .status(500)
+                .json({message:'Gagal menghapus dari keranjang', error:error.message})
+    }
+}
