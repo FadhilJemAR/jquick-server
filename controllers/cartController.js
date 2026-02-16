@@ -43,3 +43,17 @@ export const deleteProductFromCart = async(req,res)=>{
                 .json({message:'Gagal menghapus dari keranjang', error:error.message})
     }
 }
+
+export const changeQuantityProductInCart = async(req,res)=>{
+     try {
+        const userId = req.userId;
+        const {productId,quantity} = req.body;
+        await Cart.updateOne({userId,productId},{quantity});
+        return res
+                .json({message:'Berhasil mengubah kuantitas '})
+    } catch (error) {
+        return res
+                .status(500)
+                .json({message:'Gagal mengubah kuantitas dari keranjang', error:error.message})
+    }
+}
