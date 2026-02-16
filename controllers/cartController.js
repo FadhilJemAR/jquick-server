@@ -33,7 +33,7 @@ export const getProductsInCart  = async(req,res)=>{
 export const deleteProductFromCart = async(req,res)=>{
     try {
         const userId = req.userId;
-        const {productId} = req.params.productId;
+        const productId = req.params.productId;
         await Cart.deleteOne({userId,productId});
         return res
                 .json({message:'Berhasil menghapus dari keranjang'})
