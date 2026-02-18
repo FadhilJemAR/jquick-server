@@ -4,12 +4,17 @@ export const addProductUserCart = async(req,res)=>{
     try {
         const userId = req.userId;
         const {productId,quantity} = req.body;
-        const addToCart = await Cart.create({userId,productId,quantity});
-        if(addToCart){
-            return res 
-                    .status(200)
-                    .json({message:'Berhasil menambahkan ke keranjang'});
+        const existingProductInCart = await Cart.findOne({userId,productId});
+        if(existingProductInCart){
+            existingProductInCart.quantity += quantity;
+            await existingProductInCart.save();
+        }else{
+            await Cart.create({userId,productId,quantity});
         }
+        return res 
+                .status(200)
+                .json({message:'Berhasil menambahkan ke keranjang'});
+
     } catch (error) {
         return res
                 .status(500)
